@@ -1,0 +1,14 @@
+export const site = {
+  name: "জানার মতো",
+  nameEn: "Janar Moto",
+  domain: "janarmoto.com",
+  tagline: "যা জানা দরকার",
+  description:
+    "জানার মতো — বাংলাদেশের জন্য একটি পরিচ্ছন্ন বাংলা ব্লগ ও নিউজপোর্টাল। বিজ্ঞান, ইতিহাস, সমাজ, পরিবেশ ও সংস্কৃতি নিয়ে জানার মতো গল্প।",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://janarmoto.com",
+  locale: "bn_BD",
+  language: "bn",
+  email: "editor@janarmoto.com",
+} as const;
+
+export const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";

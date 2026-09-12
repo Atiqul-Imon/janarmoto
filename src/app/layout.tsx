@@ -1,0 +1,130 @@
+import type { Metadata, Viewport } from "next";
+import { Hind_Siliguri, Noto_Serif_Bengali } from "next/font/google";
+
+import { JsonLd } from "@/components/json-ld";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { site } from "@/lib/site";
+
+import "./globals.css";
+
+const bodyFont = Hind_Siliguri({
+  subsets: ["bengali", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const displayFont = Noto_Serif_Bengali({
+  subsets: ["bengali", "latin"],
+  weight: ["600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.name} | ${site.tagline}`,
+    template: `%s | ${site.name}`,
+  },
+  description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  publisher: site.name,
+  keywords: [
+    "জানার মতো",
+    "বাংলা ব্লগ",
+    "বাংলাদেশ",
+    "বাংলা খবর",
+    "জানার মতো লেখা",
+    "Janar Moto",
+    "Janarmoto",
+  ],
+  alternates: {
+    canonical: "/",
+    languages: {
+      "bn-BD": "/",
+      bn: "/",
+    },
+    types: {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: site.locale,
+    url: site.url,
+    siteName: site.name,
+    title: `${site.name} | ${site.tagline}`,
+    description: site.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} | ${site.tagline}`,
+    description: site.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  category: "news",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f5f5f5",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html
+      lang="bn"
+      className={`${bodyFont.variable} ${displayFont.variable} ${bodyFont.className} h-full antialiased`}
+    >
+      <body className="flex min-h-full flex-col bg-paper text-ink">
+        <JsonLd
+          data={[
+            {
+              "@context": "https://schema.org",
+              "@type": "NewsMediaOrganization",
+              name: site.name,
+              alternateName: site.nameEn,
+              url: site.url,
+              logo: `${site.url}/icon`,
+              email: site.email,
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: "BD",
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: site.name,
+              url: site.url,
+              inLanguage: "bn-BD",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: `${site.url}/search?q={search_term_string}`,
+                "query-input": "required name=search_term_string",
+              },
+            },
+          ]}
+        />
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+      </body>
+    </html>
+  );
+}

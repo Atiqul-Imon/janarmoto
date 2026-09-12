@@ -1,0 +1,45 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { ArticleCard } from "@/components/article-card";
+import { getArticlesByCategory, getCategories, getCategory } from "@/lib/api";
+
+type CategoryPageProps = PageProps<"/category/[slug]">;
+
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  return categories.map((category) => ({ slug: category.slug }));
+}
+
+export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategory(slug);
+  if (!category) return { title: "বিষয় পাওয়া যায়নি" };
+
+  return {
+    title: category.name,
+    description: category.description,
+    alternates: { canonical: `/category/${category.slug}` },
+  };
+}
+
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { slug } = await params;
+  const category = await getCategory(slug);
+  if (!category) notFound();
+
+  const articles = await getArticlesByCategory(slug);
+
+  return (
+    <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
+      <p className="text-xs tracking-[0.16em] text-accent">বিষয়</p>
+      <h1 className="mt-2 font-display text-4xl">{category.name}</h1>
+      <p className="mt-3 max-w-2xl text-muted">{category.description}</p>
+      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {articles.map((article) => (
+          <ArticleCard key={article.slug} article={article} />
+        ))}
+      </div>
+    </main>
+  );
+}
