@@ -4,10 +4,12 @@ import { getArticles, getCategories } from "@/lib/api";
 import { site } from "@/lib/site";
 import Link from "next/link";
 
+export const revalidate = 60;
+
 export default async function Home() {
   const [articles, categories] = await Promise.all([getArticles(), getCategories()]);
   const featured = articles.find((article) => article.featured) ?? articles[0];
-  const rest = articles.filter((article) => article.slug !== featured.slug);
+  const rest = featured ? articles.filter((article) => article.slug !== featured.slug) : [];
   const latest = rest.slice(0, 4);
   const more = rest.slice(4);
 
@@ -16,7 +18,15 @@ export default async function Home() {
       <h1 className="sr-only">
         {site.name} — {site.tagline}
       </h1>
-      <FeaturedStory article={featured} />
+      {featured ? (
+        <FeaturedStory article={featured} />
+      ) : (
+        <section className="max-w-2xl py-12">
+          <p className="text-xs tracking-[0.18em] text-accent">জানার মতো</p>
+          <h2 className="mt-3 font-display text-3xl sm:text-4xl">এখনো কোনো লেখা প্রকাশ হয়নি</h2>
+          <p className="mt-4 text-lg leading-8 text-muted">নতুন লেখা এলে এখানে দেখা যাবে।</p>
+        </section>
+      )}
 
       <section className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div>

@@ -7,8 +7,6 @@ const fetchTimeoutMs = 4_000;
 const isProductionBuild =
   process.env.NEXT_PHASE === "phase-production-build" || process.env.npm_lifecycle_event === "build";
 
-let apiUnreachable = false;
-
 function isLocalhostApi(url: string) {
   try {
     const host = new URL(url).hostname;
@@ -18,8 +16,12 @@ function isLocalhostApi(url: string) {
   }
 }
 
+function allowMockFallback() {
+  return !apiUrl || isLocalhostApi(apiUrl);
+}
+
 async function fetchApi<T>(path: string): Promise<T | null> {
-  if (!apiUrl || apiUnreachable) return null;
+  if (!apiUrl) return null;
   if (isProductionBuild && isLocalhostApi(apiUrl)) return null;
 
   try {
@@ -38,51 +40,65 @@ async function fetchApi<T>(path: string): Promise<T | null> {
 
     return payload as T;
   } catch {
-    apiUnreachable = true;
     return null;
   }
 }
 
-export async function getCategories(): Promise<Category[]> {
-  return (await fetchApi<Category[]>("/categories")) ?? mockCategories;
-}
-
-export async function getCategory(slug: string): Promise<Category | undefined> {
-  const fromApi = await fetchApi<Category>(`/categories/${slug}`);
-  return fromApi ?? mockCategories.find((category) => category.slug === slug);
-}
-
-export async function getArticles(): Promise<Article[]> {
-  const fromApi = await fetchApi<Article[]>("/articles");
-  return [...(fromApi ?? mockArticles)].sort(
+function sortArticles(articles: Article[]) {
+  return [...articles].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   );
 }
 
+export async function getCategories(): Promise<Category[]> {
+  const fromApi = await fetchApi<Category[]>("/categories");
+  if (fromApi !== null) return fromApi;
+  return allowMockFallback() ? mockCategories : [];
+}
+
+export async function getCategory(slug: string): Promise<Category | undefined> {
+  const fromApi = await fetchApi<Category>(`/categories/${slug}`);
+  if (fromApi) return fromApi;
+  if (!allowMockFallback()) return undefined;
+  return mockCategories.find((category) => category.slug === slug);
+}
+
+export async function getArticles(): Promise<Article[]> {
+  const fromApi = await fetchApi<Article[]>("/articles");
+  if (fromApi !== null) return sortArticles(fromApi);
+  return allowMockFallback() ? sortArticles(mockArticles) : [];
+}
+
 export async function getArticle(slug: string): Promise<Article | undefined> {
   const fromApi = await fetchApi<Article>(`/articles/${slug}`);
-  return fromApi ?? mockArticles.find((article) => article.slug === slug);
+  if (fromApi) return fromApi;
+  if (!allowMockFallback()) return undefined;
+  return mockArticles.find((article) => article.slug === slug);
 }
 
 export async function getArticlesByCategory(slug: string): Promise<Article[]> {
   const fromApi = await fetchApi<Article[]>(`/categories/${slug}/articles`);
-  if (fromApi) return fromApi;
+  if (fromApi !== null) return fromApi;
   return (await getArticles()).filter((article) => article.category.slug === slug);
 }
 
 export async function getArticlesByAuthor(slug: string): Promise<Article[]> {
   const fromApi = await fetchApi<Article[]>(`/authors/${slug}/articles`);
-  if (fromApi) return fromApi;
+  if (fromApi !== null) return fromApi;
   return (await getArticles()).filter((article) => article.author.slug === slug);
 }
 
 export async function getAuthors(): Promise<Author[]> {
-  return (await fetchApi<Author[]>("/authors")) ?? mockAuthors;
+  const fromApi = await fetchApi<Author[]>("/authors");
+  if (fromApi !== null) return fromApi;
+  return allowMockFallback() ? mockAuthors : [];
 }
 
 export async function getAuthor(slug: string): Promise<Author | undefined> {
   const fromApi = await fetchApi<Author>(`/authors/${slug}`);
-  return fromApi ?? mockAuthors.find((author) => author.slug === slug);
+  if (fromApi) return fromApi;
+  if (!allowMockFallback()) return undefined;
+  return mockAuthors.find((author) => author.slug === slug);
 }
 
 export async function searchArticles(query: string): Promise<Article[]> {
@@ -90,7 +106,7 @@ export async function searchArticles(query: string): Promise<Article[]> {
   if (!trimmed) return [];
 
   const fromApi = await fetchApi<Article[]>(`/search?q=${encodeURIComponent(trimmed)}`);
-  if (fromApi) return fromApi;
+  if (fromApi !== null) return fromApi;
 
   const haystack = trimmed.toLocaleLowerCase("bn");
   return (await getArticles()).filter((article) => {
