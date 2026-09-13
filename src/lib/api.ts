@@ -98,3 +98,29 @@ export async function searchArticles(query: string): Promise<Article[]> {
     return blob.toLocaleLowerCase("bn").includes(haystack);
   });
 }
+
+export async function getPreviewArticle(slug: string, queryString: string): Promise<Article | null> {
+  if (!apiUrl) return null;
+
+  const qs = queryString.startsWith("?") ? queryString.slice(1) : queryString;
+  if (!qs) return null;
+
+  try {
+    const response = await fetch(`${apiUrl}/articles/${encodeURIComponent(slug)}/preview?${qs}`, {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+      signal: AbortSignal.timeout(fetchTimeoutMs),
+    });
+
+    if (!response.ok) return null;
+
+    const payload = (await response.json()) as { data?: Article } | Article;
+    if (payload && typeof payload === "object" && "data" in payload && payload.data) {
+      return payload.data;
+    }
+
+    return payload as Article;
+  } catch {
+    return null;
+  }
+}

@@ -10,6 +10,7 @@ export type Author = {
   slug: string;
   bio: string;
   role: string;
+  photo?: string | null;
 };
 
 export type Category = {
