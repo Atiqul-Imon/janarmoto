@@ -23,15 +23,17 @@ export default async function Home() {
       ) : (
         <section className="max-w-2xl py-12">
           <p className="text-xs tracking-[0.18em] text-accent">জানার মতো</p>
-          <h2 className="mt-3 font-display text-3xl sm:text-4xl">এখনো কোনো লেখা প্রকাশ হয়নি</h2>
-          <p className="mt-4 text-lg leading-8 text-muted">নতুন লেখা এলে এখানে দেখা যাবে।</p>
+          <h2 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.5rem]">
+            এখনো কোনো লেখা প্রকাশ হয়নি
+          </h2>
+          <p className="mt-4 text-[1.125rem] leading-8 text-muted">নতুন লেখা এলে এখানে দেখা যাবে।</p>
         </section>
       )}
 
       <section className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div>
           <div className="mb-6 flex items-end justify-between border-b border-rule pb-3">
-            <h2 className="font-display text-2xl">নতুন লেখা</h2>
+          <h2 className="font-display text-[1.55rem] font-semibold">নতুন লেখা</h2>
           </div>
           <div className="grid gap-8 sm:grid-cols-2">
             {latest.map((article) => (
@@ -40,13 +42,13 @@ export default async function Home() {
           </div>
         </div>
         <aside>
-          <h2 className="border-b border-rule pb-3 font-display text-2xl">বিষয়</h2>
-          <ul className="mt-4 space-y-3">
+          <h2 className="border-b border-rule pb-3 font-display text-[1.55rem] font-semibold">বিষয়</h2>
+          <ul className="mt-4 space-y-4">
             {categories.map((category) => (
               <li key={category.slug}>
                 <Link href={`/category/${category.slug}`} className="block hover:text-accent">
                   <span className="font-medium">{category.name}</span>
-                  <span className="mt-1 block text-sm text-muted">{category.description}</span>
+                  <span className="mt-1 block text-[0.975rem] leading-7 text-muted">{category.description}</span>
                 </Link>
               </li>
             ))}
@@ -56,7 +58,7 @@ export default async function Home() {
 
       {more.length > 0 ? (
         <section className="mt-16">
-          <h2 className="mb-2 border-b border-rule pb-3 font-display text-2xl">আরও পড়ুন</h2>
+          <h2 className="mb-2 border-b border-rule pb-3 font-display text-[1.55rem] font-semibold">আরও পড়ুন</h2>
           {more.map((article) => (
             <ArticleCard key={article.slug} article={article} variant="horizontal" />
           ))}

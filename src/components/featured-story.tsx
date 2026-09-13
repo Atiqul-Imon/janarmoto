@@ -18,14 +18,14 @@ export function FeaturedStory({ article }: { article: Article }) {
         />
       </Link>
       <div>
-        <p className="text-xs font-medium tracking-[0.18em] text-accent">আজকের লেখা</p>
-        <h2 className="mt-3 font-display text-3xl leading-tight sm:text-5xl">
+        <p className="text-[0.8125rem] font-medium text-accent">আজকের লেখা</p>
+        <h2 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.85rem]">
           <Link href={`/article/${article.slug}`} className="hover:text-accent">
             {article.title}
           </Link>
         </h2>
-        <p className="mt-4 max-w-xl text-base leading-8 text-muted sm:text-lg">{article.excerpt}</p>
-        <p className="mt-5 text-sm text-muted">
+        <p className="mt-5 max-w-xl text-[1.125rem] leading-8 text-muted sm:text-[1.2rem] sm:leading-9">{article.excerpt}</p>
+        <p className="mt-6 text-[0.9375rem] text-muted">
           <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
             {article.author.name}
           </Link>

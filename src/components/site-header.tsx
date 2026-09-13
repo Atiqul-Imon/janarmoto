@@ -23,10 +23,10 @@ export async function SiteHeader() {
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 pb-4 sm:px-6">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="group">
-            <p className="font-display text-3xl leading-none tracking-tight text-ink sm:text-4xl">
+            <p className="font-display text-[2rem] font-semibold leading-none tracking-[-0.02em] text-ink sm:text-[2.35rem]">
               {site.name}
             </p>
-            <p className="mt-1 text-sm text-muted">{site.tagline}</p>
+            <p className="mt-1.5 text-[0.95rem] text-muted">{site.tagline}</p>
           </Link>
           <SearchForm className="hidden md:flex" />
           <details className="relative md:hidden">
@@ -49,7 +49,7 @@ export async function SiteHeader() {
           </details>
         </div>
         <nav aria-label="বিষয়" className="hidden border-t border-rule pt-3 md:block">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[0.975rem]">
             {categories.map((category) => (
               <li key={category.slug}>
                 <Link

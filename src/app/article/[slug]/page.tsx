@@ -99,17 +99,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           keywords: article.tags.join(", "),
         }}
       />
-      <nav className="text-sm text-muted" aria-label="ব্রেডক্রাম্ব">
+      <nav className="mx-auto max-w-[40.5rem] text-[0.9375rem] text-muted" aria-label="ব্রেডক্রাম্ব">
         <Link href="/">প্রচ্ছদ</Link>
-        <span className="mx-2">/</span>
+        <span className="mx-2 text-rule">/</span>
         <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
       </nav>
-      <article className="mt-6">
-        <header className="max-w-3xl">
-          <p className="text-xs tracking-[0.16em] text-accent">{article.category.name}</p>
-          <h1 className="mt-3 font-display text-3xl leading-tight sm:text-5xl">{article.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-muted">{article.excerpt}</p>
-          <p className="mt-5 text-sm text-muted">
+      <article className="mt-7">
+        <header className="mx-auto max-w-[40.5rem]">
+          <p className="text-[0.8125rem] font-medium text-accent">{article.category.name}</p>
+          <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+            {article.title}
+          </h1>
+          <p className="mt-5 text-[1.125rem] leading-8 text-muted sm:text-[1.2rem] sm:leading-9">{article.excerpt}</p>
+          <p className="mt-6 text-[0.9375rem] text-muted">
             <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
               {article.author.name}
             </Link>
@@ -119,7 +121,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {formatReadingTime(article.readingMinutes)}
           </p>
         </header>
-        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-lg">
+        <div className="relative mx-auto mt-9 aspect-[16/9] max-w-3xl overflow-hidden rounded-lg">
           <Image
             src={article.coverImage}
             alt={article.coverAlt}
@@ -129,10 +131,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             className="object-cover"
           />
         </div>
-        <div className="mt-10">
+        <div className="mt-12">
           <ArticleBody html={article.html} blocks={article.blocks} />
         </div>
-        <footer className="mt-10 max-w-2xl border-t border-rule pt-6">
+        <footer className="mx-auto mt-12 max-w-[40.5rem] border-t border-rule pt-7">
           <ShareLinks title={article.title} path={`/article/${article.slug}`} />
           <ul className="mt-4 flex flex-wrap gap-2">
             {article.tags.map((tag) => (
@@ -145,7 +147,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </article>
       {related.length > 0 ? (
         <section className="mt-16">
-          <h2 className="mb-6 font-display text-2xl">এই বিষয়ে আরও</h2>
+          <h2 className="mb-6 font-display text-[1.65rem] font-semibold">এই বিষয়ে আরও</h2>
           <div className="grid gap-8 sm:grid-cols-3">
             {related.map((item) => (
               <ArticleCard key={item.slug} article={item} />

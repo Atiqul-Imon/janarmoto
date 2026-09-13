@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Hind_Siliguri, Noto_Serif_Bengali } from "next/font/google";
+import { Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
@@ -8,17 +8,15 @@ import { site } from "@/lib/site";
 
 import "./globals.css";
 
-const bodyFont = Hind_Siliguri({
+const bodyFont = Noto_Sans_Bengali({
   subsets: ["bengali", "latin"],
-  weight: ["400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap",
 });
 
 const displayFont = Noto_Serif_Bengali({
   subsets: ["bengali", "latin"],
-  weight: ["600", "700"],
-  variable: "--font-display",
+  variable: "--font-headline",
   display: "swap",
 });
 
@@ -80,7 +78,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5f5f5",
+  themeColor: "#f6f4ef",
   width: "device-width",
   initialScale: 1,
 };

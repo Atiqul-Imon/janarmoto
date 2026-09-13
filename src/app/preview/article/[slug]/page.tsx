@@ -42,12 +42,14 @@ export default async function PreviewArticlePage({ params, searchParams }: Previ
       <div className="rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-sm">
         এটি একটি খসড়া প্রিভিউ। পাঠকেরা এটি দেখতে পাবেন না যতক্ষণ না আপনি প্রকাশ করেন।
       </div>
-      <article className="mt-6">
-        <header className="max-w-3xl">
-          <p className="text-xs tracking-[0.16em] text-accent">{article.category.name}</p>
-          <h1 className="mt-3 font-display text-3xl leading-tight sm:text-5xl">{article.title}</h1>
-          <p className="mt-4 text-lg leading-8 text-muted">{article.excerpt}</p>
-          <p className="mt-5 text-sm text-muted">
+      <article className="mt-7">
+        <header className="mx-auto max-w-[40.5rem]">
+          <p className="text-[0.8125rem] font-medium text-accent">{article.category.name}</p>
+          <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+            {article.title}
+          </h1>
+          <p className="mt-5 text-[1.125rem] leading-8 text-muted sm:text-[1.2rem] sm:leading-9">{article.excerpt}</p>
+          <p className="mt-6 text-[0.9375rem] text-muted">
             <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
               {article.author.name}
             </Link>
@@ -61,7 +63,7 @@ export default async function PreviewArticlePage({ params, searchParams }: Previ
             {formatReadingTime(article.readingMinutes)}
           </p>
         </header>
-        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-lg">
+        <div className="relative mx-auto mt-9 aspect-[16/9] max-w-3xl overflow-hidden rounded-lg">
           <Image
             src={article.coverImage}
             alt={article.coverAlt}
@@ -71,7 +73,7 @@ export default async function PreviewArticlePage({ params, searchParams }: Previ
             className="object-cover"
           />
         </div>
-        <div className="mt-10">
+        <div className="mt-12">
           <ArticleBody html={article.html} blocks={article.blocks} />
         </div>
       </article>

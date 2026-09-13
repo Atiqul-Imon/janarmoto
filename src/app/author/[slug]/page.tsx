@@ -33,7 +33,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
-      <p className="text-xs tracking-[0.16em] text-accent">{author.role}</p>
+      <p className="text-[0.8125rem] font-medium text-accent">{author.role}</p>
       <div className="mt-3 flex items-start gap-4">
         {author.photo ? (
           <Image
@@ -45,8 +45,10 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           />
         ) : null}
         <div>
-          <h1 className="font-display text-4xl">{author.name}</h1>
-          <p className="mt-3 max-w-2xl leading-8 text-muted">{author.bio}</p>
+          <h1 className="font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+            {author.name}
+          </h1>
+          <p className="mt-3 max-w-2xl text-[1.125rem] leading-8 text-muted">{author.bio}</p>
         </div>
       </div>
       <div className="mt-10">

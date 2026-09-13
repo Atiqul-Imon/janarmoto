@@ -7,8 +7,8 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-rule bg-paper">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
-          <p className="font-display text-2xl">{site.name}</p>
-          <p className="mt-2 max-w-sm text-sm leading-7 text-muted">{site.description}</p>
+          <p className="font-display text-[1.65rem] font-semibold tracking-[-0.02em]">{site.name}</p>
+          <p className="mt-3 max-w-sm text-[0.975rem] leading-7 text-muted">{site.description}</p>
         </div>
         <div>
           <p className="text-sm font-medium">লিংক</p>

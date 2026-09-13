@@ -10,8 +10,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main id="main" className="mx-auto w-full max-w-2xl flex-1 px-4 py-10 sm:px-6">
-      <h1 className="font-display text-4xl">আমাদের কথা</h1>
+    <main id="main" className="mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6">
+      <h1 className="font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+        আমাদের কথা
+      </h1>
       <div className="article-body mt-8">
         <p>
           {site.name} একটি বাংলা প্ল্যাটফর্ম—খবরের শোরগোল নয়, জানার মতো লেখার জন্য। আমরা বিজ্ঞান, ইতিহাস, সমাজ,

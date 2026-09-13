@@ -18,7 +18,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
-      <h1 className="font-display text-4xl">খুঁজুন</h1>
+      <h1 className="font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+        খুঁজুন
+      </h1>
       <div className="mt-6">
         <SearchForm defaultValue={query} className="max-w-none" />
       </div>

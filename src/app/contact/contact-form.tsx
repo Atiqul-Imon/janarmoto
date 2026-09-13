@@ -19,7 +19,7 @@ export function ContactForm() {
           id="name"
           name="name"
           required
-          className="w-full rounded-md border border-rule bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-accent/30"
+          className="w-full rounded-md border border-rule bg-white px-3 py-2.5 text-[1.05rem] leading-7 outline-none focus:ring-2 focus:ring-accent/30"
         />
       </div>
       <div>
@@ -31,7 +31,7 @@ export function ContactForm() {
           name="email"
           type="email"
           required
-          className="w-full rounded-md border border-rule bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-accent/30"
+          className="w-full rounded-md border border-rule bg-white px-3 py-2.5 text-[1.05rem] leading-7 outline-none focus:ring-2 focus:ring-accent/30"
         />
       </div>
       <div>
@@ -43,7 +43,7 @@ export function ContactForm() {
           name="message"
           required
           rows={5}
-          className="w-full rounded-md border border-rule bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-accent/30"
+          className="w-full rounded-md border border-rule bg-white px-3 py-2.5 text-[1.05rem] leading-7 outline-none focus:ring-2 focus:ring-accent/30"
         />
       </div>
       <button

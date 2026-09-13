@@ -32,9 +32,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
-      <p className="text-xs tracking-[0.16em] text-accent">বিষয়</p>
-      <h1 className="mt-2 font-display text-4xl">{category.name}</h1>
-      <p className="mt-3 max-w-2xl text-muted">{category.description}</p>
+      <p className="text-[0.8125rem] font-medium text-accent">বিষয়</p>
+      <h1 className="mt-2 font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+        {category.name}
+      </h1>
+      <p className="mt-3 max-w-2xl text-[1.125rem] leading-8 text-muted">{category.description}</p>
       <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {articles.map((article) => (
           <ArticleCard key={article.slug} article={article} />
