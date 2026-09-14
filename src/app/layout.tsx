@@ -75,10 +75,6 @@ export const metadata: Metadata = {
     },
   },
   category: "news",
-  icons: {
-    icon: [{ url: "/logo.webp", type: "image/webp" }],
-    apple: "/logo.webp",
-  },
 };
 
 export const viewport: Viewport = {

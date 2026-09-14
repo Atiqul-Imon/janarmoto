@@ -10,13 +10,18 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     background_color: "#f5f5f5",
-    theme_color: "#f5f5f5",
+    theme_color: "#f6f4ef",
     lang: "bn",
     icons: [
       {
-        src: "/logo.webp",
-        sizes: "512x512",
-        type: "image/webp",
+        src: "/favicon.ico",
+        sizes: "48x48",
+        type: "image/x-icon",
+      },
+      {
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
       },
     ],
   };
