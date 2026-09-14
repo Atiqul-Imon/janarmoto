@@ -5,16 +5,17 @@ import { site } from "@/lib/site";
 type SiteLogoProps = {
   size?: number;
   className?: string;
+  priority?: boolean;
 };
 
-export function SiteLogo({ size = 64, className = "" }: SiteLogoProps) {
+export function SiteLogo({ size = 64, className = "", priority = false }: SiteLogoProps) {
   return (
     <Image
       src="/logo.webp"
       alt={site.name}
       width={size}
       height={size}
-      priority={size >= 64}
+      priority={priority}
       className={`rounded-full object-cover ${className}`}
     />
   );
