@@ -21,7 +21,7 @@ export default function OpenGraphImage() {
           padding: "72px",
         }}
       >
-        <div style={{ display: "flex", fontSize: 28, letterSpacing: 6, color: "#9c2f1b" }}>JANAR MOTO</div>
+        <div style={{ display: "flex", fontSize: 28, letterSpacing: 6, color: "#fc2a21" }}>JANAR MOTO</div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.1 }}>Worth knowing,</div>
           <div style={{ fontSize: 72, fontWeight: 700, lineHeight: 1.1 }}>in Bangla.</div>

@@ -5,7 +5,7 @@
   --color-ink: #1a1612;
   --color-muted: #5a5348;
   --color-rule: #e6e1d8;
-  --color-accent: #9c2f1b;
+  --color-accent: #fc2a21;
   --font-sans: var(--font-body), "Hind Siliguri", sans-serif;
   --font-display: var(--font-headline), "Noto Serif Bengali", serif;
 }
@@ -123,10 +123,15 @@ details summary::-webkit-details-marker {
 }
 
 .article-body a {
-  color: var(--color-accent);
+  color: inherit;
   text-decoration: underline;
+  text-decoration-color: var(--color-accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
+}
+
+.article-body a:hover {
+  color: var(--color-accent);
 }
 
 .article-body ul,

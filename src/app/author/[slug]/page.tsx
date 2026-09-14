@@ -36,7 +36,7 @@ export default async function AuthorPage({ params, searchParams }: AuthorPagePro
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
-      <p className="text-[0.8125rem] font-medium text-accent">{author.role}</p>
+      <p className="text-[0.8125rem] font-medium text-muted">{author.role}</p>
       <div className="mt-3 flex items-start gap-4">
         {author.photo ? (
           <Image

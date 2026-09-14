@@ -13,7 +13,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
   if (variant === "compact") {
     return (
       <article className="border-b border-rule py-4 last:border-b-0">
-        <p className="text-[0.8125rem] font-medium text-accent">{article.category.name}</p>
+        <p className="text-[0.8125rem] font-medium text-muted">{article.category.name}</p>
         <h3 className="mt-1 font-display text-lg font-semibold leading-[1.4]">
           <Link href={`/article/${article.slug}`} className="hover:text-accent">
             {article.title}
@@ -39,7 +39,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
           />
         </Link>
         <div>
-          <p className="text-[0.8125rem] font-medium text-accent">{article.category.name}</p>
+          <p className="text-[0.8125rem] font-medium text-muted">{article.category.name}</p>
           <h3 className="mt-2 font-display text-[1.45rem] font-semibold leading-[1.35] sm:text-[1.65rem]">
             <Link href={`/article/${article.slug}`} className="hover:text-accent">
               {article.title}
@@ -65,7 +65,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
           className="object-cover transition-transform duration-500 hover:scale-[1.03]"
         />
       </Link>
-      <p className="mt-3 text-[0.8125rem] font-medium text-accent">{article.category.name}</p>
+      <p className="mt-3 text-[0.8125rem] font-medium text-muted">{article.category.name}</p>
       <h3 className="mt-2 font-display text-[1.35rem] font-semibold leading-[1.35]">
         <Link href={`/article/${article.slug}`} className="hover:text-accent">
           {article.title}

@@ -35,7 +35,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
-      <p className="text-[0.8125rem] font-medium text-accent">বিষয়</p>
+      <p className="text-[0.8125rem] font-medium text-muted">বিষয়</p>
       <h1 className="mt-2 font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
         {category.name}
       </h1>
