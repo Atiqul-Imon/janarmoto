@@ -202,6 +202,10 @@ export async function getArticlesByAuthor(slug: string, page = 1): Promise<Pagin
   return getArticleFeed({ author: slug, page, perPage: 24 });
 }
 
+export async function getArticlesByTag(tag: string, page = 1): Promise<PaginatedArticles> {
+  return getArticleFeed({ tag, page, perPage: 24 });
+}
+
 export async function getAuthors(): Promise<Author[]> {
   const fromApi = await fetchApi<Author[]>("/authors");
   if (fromApi !== null) return fromApi;

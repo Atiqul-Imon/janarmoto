@@ -5,10 +5,19 @@ import { notFound } from "next/navigation";
 
 import { ArticleBody } from "@/components/article-body";
 import { ArticleCard } from "@/components/article-card";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { JsonLd } from "@/components/json-ld";
 import { ShareLinks } from "@/components/share-links";
 import { getArticle, getArticleSlugs, getRelatedArticles } from "@/lib/api";
 import { formatDate, formatReadingTime } from "@/lib/format";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  publisherJsonLd,
+  socialImage,
+  websiteId,
+  wordCountFromHtml,
+} from "@/lib/seo";
 import { site } from "@/lib/site";
 
 type ArticlePageProps = PageProps<"/article/[slug]">;
@@ -21,42 +30,50 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
-  if (!article) return { title: "লেখা পাওয়া যায়নি" };
+  if (!article) return { title: "লেখা পাওয়া যায়নি", robots: { index: false, follow: true } };
 
   const url = `/article/${article.slug}`;
   const title = article.metaTitle ?? article.title;
   const description = article.metaDescription ?? article.excerpt;
   const image = article.ogImage ?? article.coverImage;
   const indexable = article.robotsIndex !== false;
+  const canonical = absoluteUrl(article.canonicalUrl ?? url);
 
   return {
     title,
     description,
-    authors: [{ name: article.author.name }],
-    keywords: article.tags,
+    authors: [{ name: article.author.name, url: `/author/${article.author.slug}` }],
+    keywords: article.tags ?? [],
     robots: {
       index: indexable,
       follow: article.robotsFollow !== false,
+      googleBot: {
+        index: indexable,
+        follow: article.robotsFollow !== false,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
-    alternates: { canonical: article.canonicalUrl ?? url },
+    alternates: { canonical },
     openGraph: {
       type: "article",
       locale: site.locale,
-      url,
+      url: canonical,
       title: article.ogTitle ?? title,
       description: article.ogDescription ?? description,
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt,
       authors: [article.author.name],
       section: article.category.name,
-      tags: article.tags,
-      images: [{ url: image, alt: article.coverAlt }],
+      tags: article.tags ?? [],
+      images: socialImage(image, article.coverAlt),
     },
     twitter: {
       card: "summary_large_image",
       title: article.ogTitle ?? title,
       description: article.ogDescription ?? description,
-      images: [image],
+      images: [absoluteUrl(image)],
     },
   };
 }
@@ -67,8 +84,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   if (!article) notFound();
 
   const related = (await getRelatedArticles(article.slug)).slice(0, 3);
-
-  const url = `${site.url}/article/${article.slug}`;
+  const url = absoluteUrl(`/article/${article.slug}`);
+  const image = absoluteUrl(article.ogImage ?? article.coverImage);
+  const updated = article.updatedAt && article.updatedAt !== article.publishedAt;
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
@@ -76,45 +94,68 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         data={{
           "@context": "https://schema.org",
           "@type": "NewsArticle",
+          "@id": `${url}#article`,
           headline: article.title,
           description: article.excerpt,
-          image: [article.coverImage],
+          image: [image],
+          thumbnailUrl: image,
           datePublished: article.publishedAt,
-          dateModified: article.updatedAt,
-          inLanguage: "bn-BD",
-          mainEntityOfPage: url,
+          dateModified: article.updatedAt ?? article.publishedAt,
+          inLanguage: article.inLanguage ?? "bn-BD",
+          url,
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": url,
+          },
+          isAccessibleForFree: true,
+          isPartOf: { "@id": websiteId },
           author: {
             "@type": "Person",
             name: article.author.name,
-            url: `${site.url}/author/${article.author.slug}`,
+            url: absoluteUrl(`/author/${article.author.slug}`),
           },
-          publisher: {
-            "@type": "NewsMediaOrganization",
-            name: site.name,
-            url: site.url,
-          },
+          publisher: publisherJsonLd(),
           articleSection: article.category.name,
-          keywords: article.tags.join(", "),
+          keywords: (article.tags ?? []).join(", "),
+          wordCount: wordCountFromHtml(article.html),
+          timeRequired: `PT${Math.max(1, article.readingMinutes)}M`,
         }}
       />
-      <nav className="mx-auto max-w-[40.5rem] text-[0.9375rem] text-muted" aria-label="ব্রেডক্রাম্ব">
-        <Link href="/">প্রচ্ছদ</Link>
-        <span className="mx-2 text-rule">/</span>
-        <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
-      </nav>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "প্রচ্ছদ", path: "/" },
+          { name: article.category.name, path: `/category/${article.category.slug}` },
+          { name: article.title, path: `/article/${article.slug}` },
+        ])}
+      />
+      <Breadcrumbs
+        items={[
+          { href: "/", label: "প্রচ্ছদ" },
+          { href: `/category/${article.category.slug}`, label: article.category.name },
+          { label: article.title },
+        ]}
+      />
       <article className="mt-7">
         <header className="mx-auto max-w-[40.5rem]">
-          <p className="text-[0.8125rem] font-medium text-accent">{article.category.name}</p>
+          <p className="text-[0.8125rem] font-medium text-accent">
+            <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
+          </p>
           <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
             {article.title}
           </h1>
           <p className="mt-5 text-[1.125rem] leading-8 text-muted sm:text-[1.2rem] sm:leading-9">{article.excerpt}</p>
           <p className="mt-6 text-[0.9375rem] text-muted">
-            <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
+            <Link href={`/author/${article.author.slug}`} className="hover:text-ink" rel="author">
               {article.author.name}
             </Link>
             {" · "}
             <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+            {updated ? (
+              <>
+                {" · হালনাগাদ "}
+                <time dateTime={article.updatedAt}>{formatDate(article.updatedAt)}</time>
+              </>
+            ) : null}
             {" · "}
             {formatReadingTime(article.readingMinutes)}
           </p>
@@ -135,9 +176,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <footer className="mx-auto mt-12 max-w-[40.5rem] border-t border-rule pt-7">
           <ShareLinks title={article.title} path={`/article/${article.slug}`} />
           <ul className="mt-4 flex flex-wrap gap-2">
-            {article.tags.map((tag) => (
-              <li key={tag} className="rounded-full border border-rule px-3 py-1 text-xs text-muted">
-                {tag}
+            {article.tags?.map((tag) => (
+              <li key={tag}>
+                <Link
+                  href={`/tag/${tag}`}
+                  className="rounded-full border border-rule px-3 py-1 text-xs text-muted hover:text-ink"
+                >
+                  {tag}
+                </Link>
               </li>
             ))}
           </ul>

@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArticleCard } from "@/components/article-card";
+import { JsonLd } from "@/components/json-ld";
 import { getArticlesByCategory, getCategories, getCategory } from "@/lib/api";
+import { absoluteUrl, breadcrumbJsonLd, itemListJsonLd, listingMetadata } from "@/lib/seo";
 
 type CategoryPageProps = PageProps<"/category/[slug]">;
 
@@ -12,16 +14,18 @@ export async function generateStaticParams() {
   return categories.map((category) => ({ slug: category.slug }));
 }
 
-export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
+  const page = Math.max(1, Number((await searchParams).page ?? 1) || 1);
   const category = await getCategory(slug);
-  if (!category) return { title: "বিষয় পাওয়া যায়নি" };
+  if (!category) return { title: "বিষয় পাওয়া যায়নি", robots: { index: false, follow: true } };
 
-  return {
-    title: category.name,
-    description: category.description,
-    alternates: { canonical: `/category/${category.slug}` },
-  };
+  return listingMetadata({
+    title: category.metaTitle ?? category.name,
+    description: category.metaDescription ?? category.description,
+    path: `/category/${category.slug}`,
+    page,
+  });
 }
 
 export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
@@ -35,6 +39,33 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: category.name,
+          description: category.description,
+          url: absoluteUrl(`/category/${category.slug}`),
+          inLanguage: "bn-BD",
+        }}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "প্রচ্ছদ", path: "/" },
+          { name: category.name, path: `/category/${category.slug}` },
+        ])}
+      />
+      {feed.data.length > 0 ? (
+        <JsonLd
+          data={itemListJsonLd(
+            feed.data.map((article) => ({
+              name: article.title,
+              path: `/article/${article.slug}`,
+            })),
+            `/category/${category.slug}`,
+          )}
+        />
+      ) : null}
       <p className="text-[0.8125rem] font-medium text-muted">বিষয়</p>
       <h1 className="mt-2 font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
         {category.name}

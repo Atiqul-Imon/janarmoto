@@ -1,10 +1,28 @@
-import { ArticleCard } from "@/components/article-card";
-import { FeaturedStory } from "@/components/featured-story";
-import { getArticleFeed, getCategories, getFeaturedArticle } from "@/lib/api";
-import { site } from "@/lib/site";
+import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ArticleCard } from "@/components/article-card";
+import { FeaturedStory } from "@/components/featured-story";
+import { JsonLd } from "@/components/json-ld";
+import { getArticleFeed, getCategories, getFeaturedArticle } from "@/lib/api";
+import { itemListJsonLd } from "@/lib/seo";
+import { site } from "@/lib/site";
+
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: {
+    absolute: `${site.name} | ${site.tagline}`,
+  },
+  description: site.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: `${site.name} | ${site.tagline}`,
+    description: site.description,
+  },
+};
 
 export default async function Home() {
   const [featured, feed, categories] = await Promise.all([
@@ -15,9 +33,32 @@ export default async function Home() {
   const rest = feed.data.filter((article) => article.slug !== featured?.slug);
   const latest = rest.slice(0, 4);
   const more = rest.slice(4);
+  const listArticles = featured ? [featured, ...latest] : latest;
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: site.name,
+          description: site.description,
+          url: site.url,
+          inLanguage: "bn-BD",
+          isPartOf: { "@id": `${site.url}/#website` },
+        }}
+      />
+      {listArticles.length > 0 ? (
+        <JsonLd
+          data={itemListJsonLd(
+            listArticles.map((article) => ({
+              name: article.title,
+              path: `/article/${article.slug}`,
+            })),
+            "/",
+          )}
+        />
+      ) : null}
       <h1 className="sr-only">
         {site.name} — {site.tagline}
       </h1>

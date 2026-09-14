@@ -5,7 +5,7 @@ function publicSiteUrl() {
   const vercelHost = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
   if (vercelHost) return `https://${vercelHost.replace(/^https?:\/\//, "")}`;
 
-  return "https://janarmoto.com";
+  return "https://www.janarmoto.com";
 }
 
 export const site = {

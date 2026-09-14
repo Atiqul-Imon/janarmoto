@@ -11,6 +11,8 @@ export type Author = {
   bio: string;
   role: string;
   photo?: string | null;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 export type Category = {
@@ -18,6 +20,8 @@ export type Category = {
   name: string;
   slug: string;
   description: string;
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 export type Article = {

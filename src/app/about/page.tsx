@@ -1,16 +1,39 @@
 import type { Metadata } from "next";
 
+import { JsonLd } from "@/components/json-ld";
+import { absoluteUrl, breadcrumbJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "আমাদের কথা",
   description: `${site.name} কেন তৈরি হয়েছে এবং আমরা কী ধরনের লেখা প্রকাশ করি।`,
   alternates: { canonical: "/about" },
+  openGraph: {
+    title: "আমাদের কথা",
+    description: `${site.name} কেন তৈরি হয়েছে এবং আমরা কী ধরনের লেখা প্রকাশ করি।`,
+    url: "/about",
+  },
 };
 
 export default function AboutPage() {
   return (
     <main id="main" className="mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: "আমাদের কথা",
+          url: absoluteUrl("/about"),
+          inLanguage: "bn-BD",
+          isPartOf: { "@id": `${site.url}/#website` },
+        }}
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "প্রচ্ছদ", path: "/" },
+          { name: "আমাদের কথা", path: "/about" },
+        ])}
+      />
       <h1 className="font-display text-[2.35rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
         আমাদের কথা
       </h1>

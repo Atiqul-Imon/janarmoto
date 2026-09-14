@@ -10,6 +10,7 @@ type SearchPageProps = PageProps<"/search">;
 export const metadata: Metadata = {
   title: "খুঁজুন",
   robots: { index: false, follow: true },
+  alternates: { canonical: "/search" },
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {

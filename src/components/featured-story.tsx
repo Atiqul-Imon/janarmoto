@@ -30,7 +30,9 @@ export function FeaturedStory({ article }: { article: Article }) {
             {article.author.name}
           </Link>
           {" · "}
-          {formatDate(article.publishedAt)} · {formatReadingTime(article.readingMinutes)}
+          <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+          {" · "}
+          {formatReadingTime(article.readingMinutes)}
         </p>
       </div>
     </article>

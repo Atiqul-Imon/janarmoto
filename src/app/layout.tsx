@@ -4,6 +4,7 @@ import { Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { publisherJsonLd, websiteJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 import "./globals.css";
@@ -41,11 +42,6 @@ export const metadata: Metadata = {
     "Janarmoto",
   ],
   alternates: {
-    canonical: "/",
-    languages: {
-      "bn-BD": "/",
-      bn: "/",
-    },
     types: {
       "application/rss+xml": "/rss.xml",
     },
@@ -53,7 +49,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: site.locale,
-    url: site.url,
     siteName: site.name,
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
@@ -63,6 +58,9 @@ export const metadata: Metadata = {
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
   },
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
   robots: {
     index: true,
     follow: true,
@@ -86,38 +84,15 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="bn"
+      lang="bn-BD"
       className={`${bodyFont.variable} ${displayFont.variable} ${bodyFont.className} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink">
         <JsonLd
-          data={[
-            {
-              "@context": "https://schema.org",
-              "@type": "NewsMediaOrganization",
-              name: site.name,
-              alternateName: site.nameEn,
-              url: site.url,
-              logo: `${site.url}/logo.webp`,
-              email: site.email,
-              address: {
-                "@type": "PostalAddress",
-                addressCountry: "BD",
-              },
-            },
-            {
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: site.name,
-              url: site.url,
-              inLanguage: "bn-BD",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: `${site.url}/search?q={search_term_string}`,
-                "query-input": "required name=search_term_string",
-              },
-            },
-          ]}
+          data={{
+            "@context": "https://schema.org",
+            "@graph": [publisherJsonLd(), websiteJsonLd()],
+          }}
         />
         <SiteHeader />
         {children}
