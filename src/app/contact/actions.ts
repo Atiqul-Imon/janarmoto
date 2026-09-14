@@ -11,9 +11,14 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const message = String(formData.get("message") ?? "").trim();
+  const website = String(formData.get("website") ?? "").trim();
 
   if (!name || !email || !message) {
     return { ok: false, message: "সব ঘর পূরণ করুন।" };
+  }
+
+  if (website) {
+    return { ok: true, message: "ধন্যবাদ। আপনার বার্তা পেয়েছি।" };
   }
 
   if (apiUrl) {
@@ -24,7 +29,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, website }),
         signal: AbortSignal.timeout(8_000),
       });
 

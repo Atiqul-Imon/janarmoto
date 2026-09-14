@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 
-import { getArticles, getCategories } from "@/lib/api";
+import { getAllArticlesForIndex, getCategories } from "@/lib/api";
 import { site } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, categories] = await Promise.all([getArticles(), getCategories()]);
+  const [articles, categories] = await Promise.all([getAllArticlesForIndex(), getCategories()]);
   const lastModified = new Date();
 
   return [

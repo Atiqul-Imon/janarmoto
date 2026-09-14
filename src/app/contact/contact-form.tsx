@@ -10,7 +10,11 @@ export function ContactForm() {
   const [state, action, pending] = useActionState(submitContact, initial);
 
   return (
-    <form action={action} className="mt-8 max-w-lg space-y-4">
+    <form action={action} className="relative mt-8 max-w-lg space-y-4">
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
       <div>
         <label htmlFor="name" className="mb-1 block text-sm">
           নাম

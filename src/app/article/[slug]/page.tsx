@@ -7,15 +7,15 @@ import { ArticleBody } from "@/components/article-body";
 import { ArticleCard } from "@/components/article-card";
 import { JsonLd } from "@/components/json-ld";
 import { ShareLinks } from "@/components/share-links";
-import { getArticle, getArticles } from "@/lib/api";
+import { getArticle, getArticleSlugs, getRelatedArticles } from "@/lib/api";
 import { formatDate, formatReadingTime } from "@/lib/format";
 import { site } from "@/lib/site";
 
 type ArticlePageProps = PageProps<"/article/[slug]">;
 
 export async function generateStaticParams() {
-  const articles = await getArticles();
-  return articles.map((article) => ({ slug: article.slug }));
+  const slugs = await getArticleSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
@@ -66,9 +66,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const article = await getArticle(slug);
   if (!article) notFound();
 
-  const related = (await getArticles())
-    .filter((item) => item.slug !== article.slug && item.category.slug === article.category.slug)
-    .slice(0, 3);
+  const related = (await getRelatedArticles(article.slug)).slice(0, 3);
 
   const url = `${site.url}/article/${article.slug}`;
 

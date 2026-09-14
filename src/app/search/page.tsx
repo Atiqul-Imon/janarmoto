@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { ArticleCard } from "@/components/article-card";
 import { SearchForm } from "@/components/search-form";
@@ -12,9 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const { q } = await searchParams;
-  const query = typeof q === "string" ? q : "";
-  const results = query ? await searchArticles(query) : [];
+  const params = await searchParams;
+  const query = typeof params.q === "string" ? params.q : "";
+  const page = Math.max(1, Number(params.page ?? 1) || 1);
+  const results = query ? await searchArticles(query, page) : null;
 
   return (
     <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:px-6">
@@ -24,18 +26,28 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <div className="mt-6">
         <SearchForm defaultValue={query} className="max-w-none" />
       </div>
-      {query ? (
+      {query && results ? (
         <p className="mt-6 text-sm text-muted">
-          “{query}” বিষয়ে {results.length.toLocaleString("bn-BD")}টি ফলাফল
+          “{query}” বিষয়ে {results.meta.total.toLocaleString("bn-BD")}টি ফলাফল
         </p>
       ) : (
         <p className="mt-6 text-sm text-muted">শিরোনাম, বিষয় বা ট্যাগ দিয়ে খুঁজুন।</p>
       )}
       <div className="mt-6">
-        {results.map((article) => (
+        {results?.data.map((article) => (
           <ArticleCard key={article.slug} article={article} variant="horizontal" />
         ))}
       </div>
+      {results && results.meta.last_page > 1 ? (
+        <nav className="mt-10 flex gap-4 text-sm text-muted" aria-label="পাতা">
+          {page > 1 ? (
+            <Link href={`/search?q=${encodeURIComponent(query)}&page=${page - 1}`}>আগের পাতা</Link>
+          ) : null}
+          {page < results.meta.last_page ? (
+            <Link href={`/search?q=${encodeURIComponent(query)}&page=${page + 1}`}>পরের পাতা</Link>
+          ) : null}
+        </nav>
+      ) : null}
     </main>
   );
 }

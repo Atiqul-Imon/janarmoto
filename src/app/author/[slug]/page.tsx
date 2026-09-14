@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { ArticleCard } from "@/components/article-card";
@@ -24,12 +25,14 @@ export async function generateMetadata({ params }: AuthorPageProps): Promise<Met
   };
 }
 
-export default async function AuthorPage({ params }: AuthorPageProps) {
+export default async function AuthorPage({ params, searchParams }: AuthorPageProps) {
   const { slug } = await params;
+  const query = await searchParams;
+  const page = Math.max(1, Number(query.page ?? 1) || 1);
   const author = await getAuthor(slug);
   if (!author) notFound();
 
-  const articles = await getArticlesByAuthor(slug);
+  const feed = await getArticlesByAuthor(slug, page);
 
   return (
     <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
@@ -52,10 +55,18 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         </div>
       </div>
       <div className="mt-10">
-        {articles.map((article) => (
+        {feed.data.map((article) => (
           <ArticleCard key={article.slug} article={article} variant="horizontal" />
         ))}
       </div>
+      {feed.meta.last_page > 1 ? (
+        <nav className="mt-10 flex gap-4 text-sm text-muted" aria-label="পাতা">
+          {page > 1 ? <Link href={`/author/${slug}?page=${page - 1}`}>আগের পাতা</Link> : null}
+          {page < feed.meta.last_page ? (
+            <Link href={`/author/${slug}?page=${page + 1}`}>পরের পাতা</Link>
+          ) : null}
+        </nav>
+      ) : null}
     </main>
   );
 }

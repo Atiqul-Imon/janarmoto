@@ -1,4 +1,4 @@
-import { getArticles } from "@/lib/api";
+import { getArticleFeed } from "@/lib/api";
 import { site } from "@/lib/site";
 
 export const revalidate = 60;
@@ -12,7 +12,7 @@ function escapeXml(value: string) {
 }
 
 export async function GET() {
-  const articles = await getArticles();
+  const { data: articles } = await getArticleFeed({ perPage: 50 });
   const items = articles
     .map(
       (article) => `    <item>

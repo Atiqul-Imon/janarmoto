@@ -1,15 +1,18 @@
 import { ArticleCard } from "@/components/article-card";
 import { FeaturedStory } from "@/components/featured-story";
-import { getArticles, getCategories } from "@/lib/api";
+import { getArticleFeed, getCategories, getFeaturedArticle } from "@/lib/api";
 import { site } from "@/lib/site";
 import Link from "next/link";
 
 export const revalidate = 60;
 
 export default async function Home() {
-  const [articles, categories] = await Promise.all([getArticles(), getCategories()]);
-  const featured = articles.find((article) => article.featured) ?? articles[0];
-  const rest = featured ? articles.filter((article) => article.slug !== featured.slug) : [];
+  const [featured, feed, categories] = await Promise.all([
+    getFeaturedArticle(),
+    getArticleFeed({ perPage: 12, excludeFeatured: true }),
+    getCategories(),
+  ]);
+  const rest = feed.data.filter((article) => article.slug !== featured?.slug);
   const latest = rest.slice(0, 4);
   const more = rest.slice(4);
 
@@ -33,7 +36,7 @@ export default async function Home() {
       <section className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div>
           <div className="mb-6 flex items-end justify-between border-b border-rule pb-3">
-          <h2 className="font-display text-[1.55rem] font-semibold">নতুন লেখা</h2>
+            <h2 className="font-display text-[1.55rem] font-semibold">নতুন লেখা</h2>
           </div>
           <div className="grid gap-8 sm:grid-cols-2">
             {latest.map((article) => (
