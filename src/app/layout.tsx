@@ -75,6 +75,10 @@ export const metadata: Metadata = {
     },
   },
   category: "news",
+  icons: {
+    icon: [{ url: "/logo.webp", type: "image/webp" }],
+    apple: "/logo.webp",
+  },
 };
 
 export const viewport: Viewport = {
@@ -98,7 +102,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               name: site.name,
               alternateName: site.nameEn,
               url: site.url,
-              logo: `${site.url}/icon`,
+              logo: `${site.url}/logo.webp`,
               email: site.email,
               address: {
                 "@type": "PostalAddress",

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { SiteLogo } from "@/components/site-logo";
 import { site } from "@/lib/site";
 
 export function SiteFooter() {
@@ -7,7 +8,7 @@ export function SiteFooter() {
     <footer className="mt-auto border-t border-rule bg-paper">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
-          <p className="font-display text-[1.65rem] font-semibold tracking-[-0.02em]">{site.name}</p>
+          <SiteLogo size={56} className="size-14" />
           <p className="mt-3 max-w-sm text-[0.975rem] leading-7 text-muted">{site.description}</p>
         </div>
         <div>

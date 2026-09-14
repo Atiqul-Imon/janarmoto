@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCategories } from "@/lib/api";
 import { formatLongDate } from "@/lib/format";
 import { site } from "@/lib/site";
+import { SiteLogo } from "@/components/site-logo";
 import { SearchForm } from "@/components/search-form";
 
 export async function SiteHeader() {
@@ -22,11 +23,12 @@ export async function SiteHeader() {
       </div>
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 pb-4 sm:px-6">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="group">
-            <p className="font-display text-[2rem] font-semibold leading-none tracking-[-0.02em] text-ink sm:text-[2.35rem]">
-              {site.name}
-            </p>
-            <p className="mt-1.5 text-[0.95rem] text-muted">{site.tagline}</p>
+          <Link href="/" className="flex items-center gap-3 sm:gap-4">
+            <SiteLogo size={72} className="size-14 sm:size-[4.5rem]" />
+            <span>
+              <span className="sr-only">{site.name}</span>
+              <p className="text-[0.95rem] leading-6 text-muted sm:text-[1.05rem]">{site.tagline}</p>
+            </span>
           </Link>
           <SearchForm className="hidden md:flex" />
           <details className="relative md:hidden">
