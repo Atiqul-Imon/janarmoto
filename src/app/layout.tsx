@@ -58,9 +58,10 @@ export const metadata: Metadata = {
     title: `${site.name} | ${site.tagline}`,
     description: site.description,
   },
-  ...(process.env.GOOGLE_SITE_VERIFICATION
-    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
-    : {}),
+  verification: {
+    google:
+      process.env.GOOGLE_SITE_VERIFICATION ?? "xP7ogTrKUceDAw6jB8YnDccmKrDFiUUPu_ffWNmqmt8",
+  },
   robots: {
     index: true,
     follow: true,
