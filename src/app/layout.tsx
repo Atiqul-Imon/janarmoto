@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 
 import { JsonLd } from "@/components/json-ld";
+import { SiteAnalytics } from "@/components/site-analytics";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { publisherJsonLd, websiteJsonLd } from "@/lib/seo";
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         {children}
         <SiteFooter />
+        <SiteAnalytics />
       </body>
     </html>
   );
