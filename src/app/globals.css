@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-paper: #f6f4ef;
-  --color-ink: #1a1612;
-  --color-muted: #5a5348;
-  --color-rule: #e6e1d8;
+  --color-paper: #ffffff;
+  --color-ink: #151515;
+  --color-muted: #667085;
+  --color-rule: #e7e5e4;
   --color-accent: #fc2a21;
+  --color-lead: #1546b7;
   --font-sans: var(--font-body), "Hind Siliguri", sans-serif;
   --font-display: var(--font-headline), "Noto Serif Bengali", serif;
 }
@@ -20,8 +21,8 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 1.0625rem;
-  line-height: 1.8;
+  font-size: 1rem;
+  line-height: 1.7;
   font-optical-sizing: auto;
   letter-spacing: 0;
   -webkit-font-smoothing: antialiased;

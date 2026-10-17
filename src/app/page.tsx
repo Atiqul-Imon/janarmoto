@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/json-ld";
 import { getArticleFeed, getCategories, getFeaturedArticle } from "@/lib/api";
 import { itemListJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
+import type { Article } from "@/lib/types";
 
 export const revalidate = 60;
 
@@ -27,16 +28,20 @@ export const metadata: Metadata = {
 export default async function Home() {
   const [featured, feed, categories] = await Promise.all([
     getFeaturedArticle(),
-    getArticleFeed({ perPage: 12, excludeFeatured: true }),
+    getArticleFeed({ perPage: 18, excludeFeatured: true }),
     getCategories(),
   ]);
   const rest = feed.data.filter((article) => article.slug !== featured?.slug);
-  const latest = rest.slice(0, 4);
-  const more = rest.slice(4);
-  const listArticles = featured ? [featured, ...latest] : latest;
+  const overlay = rest[0] ?? null;
+  const belowLead = rest.slice(overlay ? 1 : 0, overlay ? 3 : 2);
+  const rail = rest.slice(overlay ? 3 : 2, overlay ? 9 : 8);
+  const more = rest.slice(overlay ? 9 : 8);
+  const listArticles: Article[] = [featured, overlay, ...belowLead, ...rail].filter(
+    (article): article is Article => article != null,
+  );
 
   return (
-    <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
+    <main id="main" className="mx-auto w-full max-w-7xl flex-1 px-4 py-5 sm:px-6 sm:py-7">
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -62,8 +67,31 @@ export default async function Home() {
       <h1 className="sr-only">
         {site.name} — {site.tagline}
       </h1>
+
       {featured ? (
-        <FeaturedStory article={featured} />
+        <section className="grid gap-6 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)_minmax(0,19rem)] lg:items-start">
+          <div className="order-2 lg:order-1">
+            {overlay ? <ArticleCard article={overlay} variant="overlay" /> : null}
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <FeaturedStory article={featured} />
+            {belowLead.length > 0 ? (
+              <div className="mt-6 grid gap-5 border-t border-rule pt-5 sm:grid-cols-2">
+                {belowLead.map((article) => (
+                  <ArticleCard key={article.slug} article={article} />
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          <aside className="order-3 border-t border-rule pt-4 lg:border-t-0 lg:pt-0">
+            <h2 className="mb-1 border-b border-rule pb-2 font-display text-lg font-bold">সর্বশেষ</h2>
+            {rail.map((article) => (
+              <ArticleCard key={article.slug} article={article} variant="rail" />
+            ))}
+          </aside>
+        </section>
       ) : (
         <section className="max-w-2xl py-12">
           <p className="text-xs tracking-[0.18em] text-accent">জানার মতো</p>
@@ -74,38 +102,30 @@ export default async function Home() {
         </section>
       )}
 
-      <section className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <div>
-          <div className="mb-6 flex items-end justify-between border-b border-rule pb-3">
-            <h2 className="font-display text-[1.55rem] font-semibold">নতুন লেখা</h2>
+      {categories.length > 0 ? (
+        <section className="mt-10 border-t border-rule pt-6">
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <Link
+                key={category.slug}
+                href={`/category/${category.slug}`}
+                className="border border-rule px-3 py-1.5 text-sm text-ink/80 hover:border-accent hover:text-accent"
+              >
+                {category.name}
+              </Link>
+            ))}
           </div>
-          <div className="grid gap-8 sm:grid-cols-2">
-            {latest.map((article) => (
+        </section>
+      ) : null}
+
+      {more.length > 0 ? (
+        <section className="mt-8">
+          <h2 className="mb-4 border-b border-rule pb-2 font-display text-xl font-bold">আরও পড়ুন</h2>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {more.map((article) => (
               <ArticleCard key={article.slug} article={article} />
             ))}
           </div>
-        </div>
-        <aside>
-          <h2 className="border-b border-rule pb-3 font-display text-[1.55rem] font-semibold">বিষয়</h2>
-          <ul className="mt-4 space-y-4">
-            {categories.map((category) => (
-              <li key={category.slug}>
-                <Link href={`/category/${category.slug}`} className="block hover:text-accent">
-                  <span className="font-medium">{category.name}</span>
-                  <span className="mt-1 block text-[0.975rem] leading-7 text-muted">{category.description}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      </section>
-
-      {more.length > 0 ? (
-        <section className="mt-16">
-          <h2 className="mb-2 border-b border-rule pb-3 font-display text-[1.55rem] font-semibold">আরও পড়ুন</h2>
-          {more.map((article) => (
-            <ArticleCard key={article.slug} article={article} variant="horizontal" />
-          ))}
         </section>
       ) : null}
     </main>

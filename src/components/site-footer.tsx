@@ -5,8 +5,8 @@ import { site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-rule bg-paper">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
+    <footer className="mt-auto border-t border-rule bg-[#fafafa]">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
           <SiteLogo size={56} className="size-14" />
           <p className="mt-3 max-w-sm text-[0.975rem] leading-7 text-muted">{site.description}</p>

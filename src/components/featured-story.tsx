@@ -1,40 +1,32 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { formatDate, formatReadingTime } from "@/lib/format";
+import { formatRelativeTime } from "@/lib/format";
 import type { Article } from "@/lib/types";
 
 export function FeaturedStory({ article }: { article: Article }) {
   return (
-    <article className="grid gap-6 lg:grid-cols-2 lg:items-center">
-      <Link href={`/article/${article.slug}`} className="relative block aspect-[16/11] overflow-hidden rounded-lg">
+    <article>
+      <p className="text-[0.78rem] font-semibold tracking-wide text-accent">{article.category.name}</p>
+      <h2 className="mt-2 font-display text-[1.85rem] font-bold leading-[1.28] tracking-[-0.02em] text-lead sm:text-[2.15rem]">
+        <Link href={`/article/${article.slug}`} className="hover:text-accent">
+          {article.title}
+        </Link>
+      </h2>
+      <p className="mt-3 text-[1.02rem] leading-7 text-muted">{article.excerpt}</p>
+      <p className="mt-3 text-[0.8rem] text-muted">
+        <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt)}</time>
+      </p>
+      <Link href={`/article/${article.slug}`} className="relative mt-4 block aspect-[16/10] overflow-hidden">
         <Image
           src={article.coverImage}
           alt={article.coverAlt}
           fill
           priority
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="(max-width: 1024px) 100vw, 48vw"
           className="object-cover"
         />
       </Link>
-      <div>
-        <p className="text-[0.8125rem] font-medium text-accent">আজকের লেখা</p>
-        <h2 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.85rem]">
-          <Link href={`/article/${article.slug}`} className="hover:text-accent">
-            {article.title}
-          </Link>
-        </h2>
-        <p className="mt-5 max-w-xl text-[1.125rem] leading-8 text-muted sm:text-[1.2rem] sm:leading-9">{article.excerpt}</p>
-        <p className="mt-6 text-[0.9375rem] text-muted">
-          <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
-            {article.author.name}
-          </Link>
-          {" · "}
-          <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
-          {" · "}
-          {formatReadingTime(article.readingMinutes)}
-        </p>
-      </div>
     </article>
   );
 }

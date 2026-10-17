@@ -1,15 +1,64 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { formatDate, formatReadingTime } from "@/lib/format";
+import { formatDate, formatReadingTime, formatRelativeTime } from "@/lib/format";
 import type { Article } from "@/lib/types";
 
 type ArticleCardProps = {
   article: Article;
-  variant?: "default" | "compact" | "horizontal";
+  variant?: "default" | "compact" | "horizontal" | "overlay" | "rail";
 };
 
 export function ArticleCard({ article, variant = "default" }: ArticleCardProps) {
+  if (variant === "overlay") {
+    return (
+      <article>
+        <Link href={`/article/${article.slug}`} className="group relative block aspect-[4/5] overflow-hidden">
+          <Image
+            src={article.coverImage}
+            alt={article.coverAlt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 280px"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+          <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
+          <span className="absolute inset-x-0 bottom-0 p-4 text-white">
+            <span className="text-[0.75rem] font-medium text-white/80">{article.category.name}</span>
+            <span className="mt-1.5 block font-display text-[1.35rem] font-bold leading-snug">
+              {article.title}
+            </span>
+          </span>
+        </Link>
+      </article>
+    );
+  }
+
+  if (variant === "rail") {
+    return (
+      <article className="grid grid-cols-[minmax(0,1fr)_5.5rem] gap-3 border-b border-rule py-3.5 last:border-b-0">
+        <div>
+          <h3 className="font-display text-[1.05rem] font-semibold leading-snug">
+            <Link href={`/article/${article.slug}`} className="hover:text-lead">
+              {article.title}
+            </Link>
+          </h3>
+          <p className="mt-1.5 text-[0.75rem] text-muted">
+            <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt)}</time>
+          </p>
+        </div>
+        <Link href={`/article/${article.slug}`} className="relative aspect-square overflow-hidden">
+          <Image
+            src={article.coverImage}
+            alt={article.coverAlt}
+            fill
+            sizes="88px"
+            className="object-cover"
+          />
+        </Link>
+      </article>
+    );
+  }
+
   if (variant === "compact") {
     return (
       <article className="border-b border-rule py-4 last:border-b-0">
@@ -33,7 +82,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
   if (variant === "horizontal") {
     return (
       <article className="grid gap-4 border-b border-rule py-6 last:border-b-0 sm:grid-cols-[220px_1fr]">
-        <Link href={`/article/${article.slug}`} className="relative aspect-[16/10] overflow-hidden rounded-md">
+        <Link href={`/article/${article.slug}`} className="relative aspect-[16/10] overflow-hidden">
           <Image
             src={article.coverImage}
             alt={article.coverAlt}
@@ -48,13 +97,13 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
               {article.category.name}
             </Link>
           </p>
-          <h3 className="mt-2 font-display text-[1.45rem] font-semibold leading-[1.35] sm:text-[1.65rem]">
-            <Link href={`/article/${article.slug}`} className="hover:text-accent">
+          <h3 className="mt-2 font-display text-[1.2rem] font-semibold leading-[1.35] sm:text-[1.32rem]">
+            <Link href={`/article/${article.slug}`} className="hover:text-lead">
               {article.title}
             </Link>
           </h3>
-          <p className="mt-3 text-[1.05rem] leading-8 text-muted">{article.excerpt}</p>
-          <p className="mt-3 text-xs text-muted">
+          <p className="mt-2 line-clamp-2 text-[0.95rem] leading-7 text-muted">{article.excerpt}</p>
+          <p className="mt-2 text-xs text-muted">
             <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
               {article.author.name}
             </Link>
@@ -68,7 +117,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
 
   return (
     <article>
-      <Link href={`/article/${article.slug}`} className="relative block aspect-[16/10] overflow-hidden rounded-md">
+      <Link href={`/article/${article.slug}`} className="relative block aspect-[16/10] overflow-hidden">
         <Image
           src={article.coverImage}
           alt={article.coverAlt}
@@ -82,12 +131,12 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
           {article.category.name}
         </Link>
       </p>
-      <h3 className="mt-2 font-display text-[1.35rem] font-semibold leading-[1.35]">
-        <Link href={`/article/${article.slug}`} className="hover:text-accent">
+      <h3 className="mt-2 font-display text-[1.22rem] font-semibold leading-[1.35]">
+        <Link href={`/article/${article.slug}`} className="hover:text-lead">
           {article.title}
         </Link>
       </h3>
-      <p className="mt-2 text-[1.0125rem] leading-8 text-muted">{article.excerpt}</p>
+      <p className="mt-2 line-clamp-2 text-[0.95rem] leading-7 text-muted">{article.excerpt}</p>
       <p className="mt-3 text-xs text-muted">
         <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
         {" · "}

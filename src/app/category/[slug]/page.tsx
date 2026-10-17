@@ -38,7 +38,7 @@ export default async function CategoryPage({ params, searchParams }: CategoryPag
   const feed = await getArticlesByCategory(slug, page);
 
   return (
-    <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-6">
+    <main id="main" className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6">
       <JsonLd
         data={{
           "@context": "https://schema.org",
