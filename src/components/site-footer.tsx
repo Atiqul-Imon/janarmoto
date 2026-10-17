@@ -36,7 +36,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-rule py-4 text-center text-xs text-muted">
-        © {new Date().getFullYear()} {site.name}. সর্বস্বত্ব সংরক্ষিত।
+        © <span suppressHydrationWarning>{new Date().getFullYear()}</span> {site.name}. সর্বস্বত্ব সংরক্ষিত।
       </div>
     </footer>
   );

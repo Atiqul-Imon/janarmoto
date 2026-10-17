@@ -18,6 +18,7 @@ const bodyFont = Noto_Sans_Bengali({
 
 const displayFont = Noto_Serif_Bengali({
   subsets: ["bengali", "latin"],
+  weight: ["400", "600", "700"],
   variable: "--font-headline",
   display: "swap",
 });
