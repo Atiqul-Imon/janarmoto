@@ -140,10 +140,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <p className="text-[0.8125rem] font-medium text-accent">
             <Link href={`/category/${article.category.slug}`}>{article.category.name}</Link>
           </p>
-          <h1 className="mt-3 font-display text-[2rem] font-semibold leading-[1.28] tracking-[-0.02em] sm:text-[2.75rem]">
+          <h1 className="mt-3 font-display text-[1.875rem] font-semibold leading-[1.15] tracking-[-0.02em] sm:text-[2.625rem]">
             {article.title}
           </h1>
-          <p className="mt-5 text-[1.125rem] leading-8 text-muted sm:text-[1.2rem] sm:leading-9">{article.excerpt}</p>
+          <p className="mt-4 text-[1rem] leading-6 text-muted sm:text-[1.075rem] sm:leading-7">{article.excerpt}</p>
           <p className="mt-6 text-[0.9375rem] text-muted">
             <Link href={`/author/${article.author.slug}`} className="hover:text-ink" rel="author">
               {article.author.name}

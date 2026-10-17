@@ -86,7 +86,7 @@ export default async function Home() {
           </div>
 
           <aside className="order-3 border-t border-rule pt-4 lg:border-t-0 lg:pt-0">
-            <h2 className="mb-1 border-b border-rule pb-2 font-display text-lg font-bold">সর্বশেষ</h2>
+            <h2 className="mb-1 border-b border-rule pb-2 font-display text-base font-bold leading-none">সর্বশেষ</h2>
             {rail.map((article) => (
               <ArticleCard key={article.slug} article={article} variant="rail" />
             ))}
@@ -120,7 +120,7 @@ export default async function Home() {
 
       {more.length > 0 ? (
         <section className="mt-8">
-          <h2 className="mb-4 border-b border-rule pb-2 font-display text-xl font-bold">আরও পড়ুন</h2>
+          <h2 className="mb-4 border-b border-rule pb-2 font-display text-lg font-bold leading-none">আরও পড়ুন</h2>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {more.map((article) => (
               <ArticleCard key={article.slug} article={article} />

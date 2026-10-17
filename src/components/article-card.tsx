@@ -23,8 +23,8 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
           />
           <span className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
           <span className="absolute inset-x-0 bottom-0 p-4 text-white">
-            <span className="text-[0.75rem] font-medium text-white/80">{article.category.name}</span>
-            <span className="mt-1.5 block font-display text-[1.35rem] font-bold leading-snug">
+            <span className="text-[0.625rem] font-medium text-white/80">{article.category.name}</span>
+            <span className="mt-1 block font-display text-[1.225rem] font-bold leading-[1.15]">
               {article.title}
             </span>
           </span>
@@ -37,12 +37,12 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
     return (
       <article className="grid grid-cols-[minmax(0,1fr)_7rem] gap-3 border-b border-rule py-3.5 last:border-b-0">
         <div>
-          <h3 className="font-display text-[1.05rem] font-semibold leading-snug">
+          <h3 className="font-display text-[0.925rem] font-semibold leading-[1.15]">
             <Link href={`/article/${article.slug}`} className="hover:text-lead">
               {article.title}
             </Link>
           </h3>
-          <p className="mt-1.5 text-[0.75rem] text-muted">
+          <p className="mt-1 text-[0.625rem] text-muted">
             <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt)}</time>
           </p>
         </div>
@@ -67,7 +67,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
             {article.category.name}
           </Link>
         </p>
-        <h3 className="mt-1 font-display text-lg font-semibold leading-[1.4]">
+        <h3 className="mt-1 font-display text-base font-semibold leading-[1.15]">
           <Link href={`/article/${article.slug}`} className="hover:text-accent">
             {article.title}
           </Link>
@@ -97,12 +97,12 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
               {article.category.name}
             </Link>
           </p>
-          <h3 className="mt-2 font-display text-[1.2rem] font-semibold leading-[1.35] sm:text-[1.32rem]">
+          <h3 className="mt-2 font-display text-[1.075rem] font-semibold leading-[1.15] sm:text-[1.195rem]">
             <Link href={`/article/${article.slug}`} className="hover:text-lead">
               {article.title}
             </Link>
           </h3>
-          <p className="mt-2 line-clamp-2 text-[0.95rem] leading-7 text-muted">{article.excerpt}</p>
+          <p className="mt-2 line-clamp-2 text-[0.825rem] leading-5 text-muted">{article.excerpt}</p>
           <p className="mt-2 text-xs text-muted">
             <Link href={`/author/${article.author.slug}`} className="hover:text-ink">
               {article.author.name}
@@ -131,12 +131,12 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
           {article.category.name}
         </Link>
       </p>
-      <h3 className="mt-2 font-display text-[1.22rem] font-semibold leading-[1.35]">
+      <h3 className="mt-2 font-display text-[1.095rem] font-semibold leading-[1.15]">
         <Link href={`/article/${article.slug}`} className="hover:text-lead">
           {article.title}
         </Link>
       </h3>
-      <p className="mt-2 line-clamp-2 text-[0.95rem] leading-7 text-muted">{article.excerpt}</p>
+      <p className="mt-2 line-clamp-2 text-[0.825rem] leading-5 text-muted">{article.excerpt}</p>
       <p className="mt-3 text-xs text-muted">
         <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
         {" · "}

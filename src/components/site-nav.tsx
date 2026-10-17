@@ -93,7 +93,7 @@ export function SiteNav({ categories }: { categories: Category[] }) {
 
         <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label={site.name}>
           <SiteLogo size={44} className="size-11" priority />
-          <span className="font-display text-[1.65rem] font-bold tracking-[-0.03em] sm:text-[1.9rem]">
+          <span className="font-display text-[1.525rem] font-bold leading-none tracking-[-0.03em] sm:text-[1.775rem]">
             {site.name}
           </span>
         </Link>
@@ -123,7 +123,7 @@ export function SiteNav({ categories }: { categories: Category[] }) {
       ) : null}
 
       <nav aria-label="বিষয়" className="border-t border-rule bg-white">
-        <ul className="mx-auto flex max-w-7xl items-center gap-x-0 overflow-x-auto px-2 text-[0.92rem] font-medium whitespace-nowrap sm:px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="mx-auto flex max-w-7xl items-center gap-x-0 overflow-x-auto px-2 text-[0.8rem] font-medium leading-none whitespace-nowrap sm:px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {navItems.map((item) => (
             <li key={item.href}>
               <Link
