@@ -37,7 +37,7 @@ export function ArticleBody({
         }
         return (
           <figure key={index} className="my-10">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-md">
+            <div className="relative aspect-video overflow-hidden">
               <Image src={block.src} alt={block.alt} fill sizes="(max-width: 768px) 100vw, 720px" className="object-cover" />
             </div>
             {block.caption ? <figcaption className="mt-2 text-center text-sm text-muted">{block.caption}</figcaption> : null}

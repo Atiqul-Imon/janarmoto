@@ -13,7 +13,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
   if (variant === "overlay") {
     return (
       <article>
-        <Link href={`/article/${article.slug}`} className="group relative block aspect-[4/5] overflow-hidden">
+        <Link href={`/article/${article.slug}`} className="group relative block aspect-video overflow-hidden">
           <Image
             src={article.coverImage}
             alt={article.coverAlt}
@@ -35,7 +35,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
 
   if (variant === "rail") {
     return (
-      <article className="grid grid-cols-[minmax(0,1fr)_5.5rem] gap-3 border-b border-rule py-3.5 last:border-b-0">
+      <article className="grid grid-cols-[minmax(0,1fr)_7rem] gap-3 border-b border-rule py-3.5 last:border-b-0">
         <div>
           <h3 className="font-display text-[1.05rem] font-semibold leading-snug">
             <Link href={`/article/${article.slug}`} className="hover:text-lead">
@@ -46,12 +46,12 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
             <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt)}</time>
           </p>
         </div>
-        <Link href={`/article/${article.slug}`} className="relative aspect-square overflow-hidden">
+        <Link href={`/article/${article.slug}`} className="relative aspect-video overflow-hidden">
           <Image
             src={article.coverImage}
             alt={article.coverAlt}
             fill
-            sizes="88px"
+            sizes="112px"
             className="object-cover"
           />
         </Link>
@@ -82,7 +82,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
   if (variant === "horizontal") {
     return (
       <article className="grid gap-4 border-b border-rule py-6 last:border-b-0 sm:grid-cols-[220px_1fr]">
-        <Link href={`/article/${article.slug}`} className="relative aspect-[16/10] overflow-hidden">
+        <Link href={`/article/${article.slug}`} className="relative aspect-video overflow-hidden">
           <Image
             src={article.coverImage}
             alt={article.coverAlt}
@@ -117,7 +117,7 @@ export function ArticleCard({ article, variant = "default" }: ArticleCardProps) 
 
   return (
     <article>
-      <Link href={`/article/${article.slug}`} className="relative block aspect-[16/10] overflow-hidden">
+      <Link href={`/article/${article.slug}`} className="relative block aspect-video overflow-hidden">
         <Image
           src={article.coverImage}
           alt={article.coverAlt}

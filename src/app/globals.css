@@ -7,8 +7,8 @@
   --color-rule: #e7e5e4;
   --color-accent: #fc2a21;
   --color-lead: #1546b7;
-  --font-sans: var(--font-body), "Hind Siliguri", sans-serif;
-  --font-display: var(--font-headline), "Noto Serif Bengali", serif;
+  --font-sans: var(--font-varendra), "Noto Sans Bengali", sans-serif;
+  --font-display: var(--font-varendra), "Noto Sans Bengali", sans-serif;
 }
 
 html {

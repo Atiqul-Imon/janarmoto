@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_Bengali, Noto_Serif_Bengali } from "next/font/google";
 
+import { varendra } from "@/app/fonts";
 import { JsonLd } from "@/components/json-ld";
 import { SiteAnalytics } from "@/components/site-analytics";
 import { SiteFooter } from "@/components/site-footer";
@@ -9,19 +9,6 @@ import { publisherJsonLd, websiteJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 import "./globals.css";
-
-const bodyFont = Noto_Sans_Bengali({
-  subsets: ["bengali", "latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const displayFont = Noto_Serif_Bengali({
-  subsets: ["bengali", "latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-headline",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -88,7 +75,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="bn-BD"
-      className={`${bodyFont.variable} ${displayFont.variable} ${bodyFont.className} h-full antialiased`}
+      className={`${varendra.variable} ${varendra.className} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-paper text-ink">
         <JsonLd
